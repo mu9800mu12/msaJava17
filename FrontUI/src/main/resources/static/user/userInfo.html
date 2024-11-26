@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>회원정보 보기</title>
+  <link rel="stylesheet" href="/css/table.css/">
+  <script type="text/javascript" src="/js/common.js"></script>
+  <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript">
+    src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" >
+  </script>
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+
+      $("btnLogout").on("click", function () {
+        document.location.href = "http://" + apiServer + "/user/v1/logout";
+      })
+
+      $.ajax({
+        url: "http://" + apiServer + "/user/v1/userInfo";
+        type: "post"
+        xhrFields: {
+          withCredentials: true
+        },
+        dataType: "JSON",
+
+      }).then(
+          function (json) {
+
+            const result = json.data;
+
+            $("#userid").append(result.userId);
+            $("#userName").append(result.userName);
+            $("#email").append(result.email);
+            $("#addr1").append(result.addr1);
+            $("#addr2").append(result.addr2);
+
+          }, function () {
+            alert("접근 권한이 없습니다/")
+            location.href = loginPage;
+          }
+      );
+
+    })
+
+  </script>
+
+
+</head>
+<body>
+<h2>회원정보 상세 보기</h2>
+<div class="divTable minimalistBlack">
+  <div class="divTableBody">
+    <div class="divTableRow">
+      <div class="divTableCell">아이디</div>
+      <div class="divTableCell" id="userId"></div>
+    </div>
+    <div class="divTableRow">
+      <div class="divTableCell">이름</div>
+      <div class="divTableCell" id="userName"></div>
+    </div>
+    <div class="divTableRow">
+      <div class="divTableCell">이메일</div>
+      <div class="divTableCell" id="email"></div>
+    </div>
+    <div class="divTableRow">
+      <div class="divTableCell">주소</div>
+      <div class="divTableCell" id="addr1"></div>
+    </div>
+    <div class="divTableRow">
+      <div class="divTableCell">상세주소</div>
+      <div class="divTableCell" id="addr2"></div>
+    </div>
+  </div>
+</div>
+
+<br/>
+<div>
+  <button id="btnLogout" type="button">로그아웃</button>
+</div>
+
+
+</body>
+</html>
